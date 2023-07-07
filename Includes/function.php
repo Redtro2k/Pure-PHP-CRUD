@@ -12,13 +12,18 @@ function addUser($name, $phone, $gender, $civil_status){
 
     $statement->execute();
 }
-function getAllUsers()
-{
+function getAllUsers(){
     global $con;
     $sql = "SELECT * FROM user";
     $statement = $con->prepare($sql);
     $statement->execute();
 
     return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+function deleteUserById($userid){
+    global $con;
+    $stmt = $con->prepare("DELETE FROM user WHERE id = :userid");
+    $stmt->bindParam(':userid', $userid);
+    $stmt->execute();
 }
 ?>

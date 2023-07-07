@@ -14,6 +14,12 @@ if (isset($_POST['add'])) {
         echo "Missing required data.";
     }
 }
+if(isset($_GET['delete'])){
+    $userid = $_GET['delete'];
+    deleteUserById($userid);
+    header('Location: index.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,6 +63,7 @@ if (isset($_POST['add'])) {
                 <th>Phone</th>
                 <th>Gender</th>
                 <th>Civil Status</th>
+                <th>#</th>
             </tr>
         </thead>
         <tbody>
@@ -66,6 +73,7 @@ if (isset($_POST['add'])) {
                     <td><?php echo $user['phone']; ?></td>
                     <td><?php echo $user['gender']; ?></td>
                     <td><?php echo $user['civil_status']; ?></td>
+                    <td><a href="index.php?delete=<?php echo $user['id'] ?>">DELETE</a></td>
                 </tr>
             <?php endforeach ?>
         </tbody>
