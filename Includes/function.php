@@ -1,6 +1,6 @@
 <?php
+//controller
 require('connection.php');
-
 function addUser($name, $phone, $gender, $civil_status){
     global $con;
     $sql = "INSERT INTO user (name, phone, gender, civil_status) VALUES (:name, :phone, :gender, :civil_status)";
@@ -25,5 +25,13 @@ function deleteUserById($userid){
     $stmt = $con->prepare("DELETE FROM user WHERE id = :userid");
     $stmt->bindParam(':userid', $userid);
     $stmt->execute();
+}
+function edit($id){
+    global $con;
+    $stmt = $con->prepare("SELECT * FROM `user` WHERE id = :id");
+    $stmt->bindParam(":id", $id);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ?? null;
 }
 ?>

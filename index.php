@@ -1,6 +1,10 @@
 <?php
 require('includes/connection.php');
 require('includes/function.php');
+
+$checkID = isset($_GET['id']) && edit($_GET['id']) ?? null;
+$idParam = $checkID ? edit($_GET['id']) : null;
+
 if (isset($_POST['add'])) {
     $name = $_REQUEST['name'] ?? '';
     $phone_number = $_REQUEST['phone_number'] ?? '';
@@ -33,29 +37,32 @@ if(isset($_GET['delete'])){
     <form action="" method="POST">
         <h1>Add Record</h1>
         <p> Name: 
-            <input type="text" name="name" required>
+            <input type="text" name="name" value="<?php echo $checkID ? $idParam['name'] : null ?>" required>
         </p>
         <p>
             Phone:
-            <input type="tel" name="phone_number" required>
+            <input type="tel" name="phone_number" value="<?php echo $checkID ? $idParam['phone'] : null ?>" required>
         </p>
         <p>
             Gender:
             <br>
             <span>
-                Male <input type="radio" name="gender" value="male" required>
+                Male <input type="radio" name="gender" value="male" <?php if($checkID){echo $idParam['gender'] == 'male' ? 'checked' : null; } else { null;} ?> required>
             </span>
             <span>
-                Female <input type="radio" name="gender" value="female" required>
+                Female <input type="radio" name="gender" value="female" <?php if($checkID){echo $idParam['gender'] == 'female' ? 'checked' : null; } else { null;} ?> required>
             </span>
         </p>
         <p>
             Civil Status
-            <input type="text" name="civil_status" required>
+            <input type="text" name="civil_status" value="<?php echo $checkID ? $idParam['civil_status'] : null; ?>" required>
         </p>
+        <?php if(!$idParam): ?>
         <button type="submit" name="add">Submit</button>
+        <?php else: ?>
+            <button type="submit" name="update">Update</button>
+        <?php endif; ?>
     </form>
-
     <table>
         <thead>
             <tr>
