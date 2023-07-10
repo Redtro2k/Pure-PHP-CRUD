@@ -5,22 +5,36 @@ require('includes/function.php');
 $checkID = isset($_GET['id']) && edit($_GET['id']) ?? null;
 $idParam = $checkID ? edit($_GET['id']) : null;
 
-if (isset($_POST['add'])) {
-    $name = $_REQUEST['name'] ?? '';
-    $phone_number = $_REQUEST['phone_number'] ?? '';
-    $gender = $_REQUEST['gender'] ?? '';
-    $civil_status = $_REQUEST['civil_status'] ?? '';
 
+$name = $_REQUEST['name'] ?? '';
+$phone_number = $_REQUEST['phone_number'] ?? '';
+$gender = $_REQUEST['gender'] ?? '';
+$civil_status = $_REQUEST['civil_status'] ?? '';
+
+//add records
+if (isset($_POST['add'])) {
     if (!empty($name) && !empty($phone_number) && !empty($gender) && !empty($civil_status)) {
-        addUser($name, $phone_number, $gender, $civil_status);
+        store($name, $phone_number, $gender, $civil_status);
         echo "Record added successfully.";
     } else {
         echo "Missing required data.";
     }
 }
+//update
+if(isset($_POST['update']) && $idParam){
+    if (!empty($name) && !empty($phone_number) && !empty($gender) && !empty($civil_status)) {
+
+        update(array($name, $phone_number, $gender, $civil_status), $_GET['id']);
+        header("Location: index.php"); 
+    } else {
+        echo "Missing required data.";
+    }
+}
+
+//delete
 if(isset($_GET['delete'])){
     $userid = $_GET['delete'];
-    deleteUserById($userid);
+    destroy($userid);
     header('Location: index.php');
     exit();
 }
@@ -80,7 +94,7 @@ if(isset($_GET['delete'])){
                     <td><?php echo $user['phone']; ?></td>
                     <td><?php echo $user['gender']; ?></td>
                     <td><?php echo $user['civil_status']; ?></td>
-                    <td><a href="index.php?delete=<?php echo $user['id'] ?>">DELETE</a></td>
+                    <td><a href="index.php?id=<?php echo $user['id']?>">Edit</a> | <a href="index.php?delete=<?php echo $user['id'] ?>">DELETE</a></td>
                 </tr>
             <?php endforeach ?>
         </tbody>
