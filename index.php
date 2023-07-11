@@ -1,10 +1,10 @@
 <?php
 require('includes/connection.php');
 require('includes/function.php');
+require('includes/session.php');
 
 $checkID = isset($_GET['id']) && edit($_GET['id']) ?? null;
 $idParam = $checkID ? edit($_GET['id']) : null;
-
 
 $name = $_REQUEST['name'] ?? '';
 $phone_number = $_REQUEST['phone_number'] ?? '';
@@ -48,6 +48,7 @@ if(isset($_GET['delete'])){
     <title>Add Record</title>
 </head>
 <body>
+    welcome <?php echo signed()['user'] ?> user, <a href="logout.php">Logout</a>
     <form action="" method="POST">
         <h1>Add Record</h1>
         <p> Name: 

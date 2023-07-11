@@ -1,6 +1,34 @@
 <?php
 //controller
 require('connection.php');
+function login($arr){
+    global $con;
+    $sql = "SELECT * FROM admin WHERE user=:user AND pass=:pass";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(':user', $arr[0], PDO::PARAM_STR);
+    $stmt->bindParam(':pass', $arr[1], PDO::PARAM_STR);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+function register($arr){
+    global $con;
+    $sql = "INSERT INTO admin (user, pass) VALUES (:user, :pass)";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":user", $arr[0]);
+    $stmt->bindParam(":pass", $arr[1]);
+    $stmt->execute();
+}
+function signed(){
+    global $con;
+    $sql = "SELECT * FROM admin WHERE id=:id";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id", $_SESSION['id']);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 function store($name, $phone, $gender, $civil_status){
     global $con;
     $sql = "INSERT INTO user (name, phone, gender, civil_status) VALUES (:name, :phone, :gender, :civil_status)";
