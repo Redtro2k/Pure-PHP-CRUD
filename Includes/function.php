@@ -28,7 +28,6 @@ function signed(){
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-
 function store($name, $phone, $gender, $civil_status){
     global $con;
     $sql = "INSERT INTO user (name, phone, gender, civil_status) VALUES (:name, :phone, :gender, :civil_status)";
@@ -54,12 +53,16 @@ function update($arr, $id){
         echo "Update failed: " . $e->getMessage();
     }
 }
-function getAllUsers(){
+function getAllUsers($search = null){
     global $con;
-    $sql = "SELECT * FROM user";
-    $statement = $con->prepare($sql);
+    if(!empty($search)){
+        $statement = $con->prepare("SELECT * FROM user WHERE name LIKE :name");
+        $searchTerm = '%' . $search . '%';
+        $statement->bindParam(':name', $searchTerm);
+    }else{
+        $statement = $con->prepare("SELECT * FROM user");
+    }
     $statement->execute();
-
     return $statement->fetchAll(PDO::FETCH_ASSOC);
 }
 function destroy($userid){
